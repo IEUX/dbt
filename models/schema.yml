@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: events
+    schema: events
+    tables:
+      - name: events_20210131
+      
+  - name: google_sheets
+    schema: google_sheets
+    tables:
+      - name: google_sheets
+
+  - name: sales_database
+    schema: public
+    tables:
+      - name: feedback
+      - name: payment
+      - name: product
+      - name: order
+      - name: order_item
+      - name: seller
+      - name: user

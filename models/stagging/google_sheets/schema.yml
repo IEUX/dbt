@@ -1,0 +1,13 @@
+# models/staging/google_analytics/schema.yml
+version: 2
+
+models:
+  - name: stg_google_analytics__event
+    description: "Cleaned and flattened GA4 events, one row per event."
+    columns:
+      - name: ga_session_id
+        description: "GA4 session identifier extracted from event_params."
+      - name: user_pseudo_id
+        description: "Pseudonymous user identifier."
+      - name: event_timestamp
+        description: "Event time, converted from microseconds to TIMESTAMP."
