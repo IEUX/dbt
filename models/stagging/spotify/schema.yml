@@ -30,8 +30,9 @@ models:
           # inner join), which is exactly what the relationships test verifies.
           - relationships:
               name: relationships_listening_song_id__songs
-              to: ref('stg_spotify__songs')
-              field: song_id
+              arguments:
+                to: ref('stg_spotify__songs')
+                field: song_id
       - name: listen_date
         description: "Calculated: listening date cast to DATE."
       - name: minutes_listened

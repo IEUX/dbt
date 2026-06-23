@@ -17,8 +17,9 @@ models:
           - not_null
           - relationships:
               name: relationships_feedback_order_id__order
-              to: ref('stg_sales_database__order')
-              field: order_id
+              arguments:
+                to: ref('stg_sales_database__order')
+                field: order_id
       - name: feedback_score
         description: "Customer satisfaction score given for the order."
 
@@ -37,8 +38,9 @@ models:
           - not_null
           - relationships:
               name: relationships_order_user_name__user
-              to: ref('stg_sales_database__user')
-              field: user_name
+              arguments:
+                to: ref('stg_sales_database__user')
+                field: user_name
       - name: order_status
         description: "Current status of the order in its lifecycle."
         data_tests:
@@ -46,7 +48,8 @@ models:
           # before relying on this test (values below follow the standard dataset).
           - accepted_values:
               name: accepted_values_order_status
-              values: ['delivered', 'shipped', 'canceled', 'unavailable', 'invoiced', 'processing', 'created', 'approved']
+              arguments:
+                values: ['delivered', 'shipped', 'canceled', 'unavailable', 'invoiced', 'processing', 'created', 'approved']
       - name: order_date
         description: "Timestamp when the order was created."
       - name: order_approved_date
@@ -73,24 +76,27 @@ models:
           - not_null
           - relationships:
               name: relationships_order_item_order_id__order
-              to: ref('stg_sales_database__order')
-              field: order_id
+              arguments:
+                to: ref('stg_sales_database__order')
+                field: order_id
       - name: product_id
         description: "Foreign key to stg_sales_database__product."
         data_tests:
           - not_null
           - relationships:
               name: relationships_order_item_product_id__product
-              to: ref('stg_sales_database__product')
-              field: product_id
+              arguments:
+                to: ref('stg_sales_database__product')
+                field: product_id
       - name: seller_id
         description: "Foreign key to stg_sales_database__seller."
         data_tests:
           - not_null
           - relationships:
               name: relationships_order_item_seller_id__seller
-              to: ref('stg_sales_database__seller')
-              field: seller_id
+              arguments:
+                to: ref('stg_sales_database__seller')
+                field: seller_id
       - name: quantity
         description: "Number of units of the product in the line."
       - name: price
@@ -113,15 +119,17 @@ models:
           - not_null
           - relationships:
               name: relationships_payment_order_id__order
-              to: ref('stg_sales_database__order')
-              field: order_id
+              arguments:
+                to: ref('stg_sales_database__order')
+                field: order_id
       - name: payment_type
         description: "Payment method used for this payment sequence."
         data_tests:
           # NOTE: validate with `select distinct payment_type` before relying on it.
           - accepted_values:
               name: accepted_values_payment_type
-              values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'not_defined']
+              arguments:
+                values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'not_defined']
       - name: payment_sequential
         description: "Sequence number of the payment within the order."
       - name: payment_installments
