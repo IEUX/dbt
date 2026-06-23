@@ -1,0 +1,6 @@
+# models/intermediate/sales_database/int_sales_database__order.yml
+version: 2
+
+models:
+  - name: int_sales_database__order
+    description: '{{ doc("int_sales_database__order") }}' 

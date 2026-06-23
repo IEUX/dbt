@@ -1,0 +1,61 @@
+# models/staging/sales_database/schema.yml
+version: 2
+
+models:
+  - name: stg_sales_database__feedback
+    description: "Cleaned customer feedback, one row per feedback."
+    columns:
+      - name: feedback_id
+        description: "Primary key. Unique identifier of the feedback."
+      - name: order_id
+        description: "Foreign key to stg_sales_database__order."
+      - name: feedback_score
+        description: "Customer satisfaction score for the order."
+
+  - name: stg_sales_database__order
+    description: "Cleaned orders, one row per order."
+    columns:
+      - name: order_id
+        description: "Primary key. Unique identifier of the order."
+      - name: user_name
+        description: "Foreign key to stg_sales_database__user."
+      - name: order_status
+        description: "Current status of the order."
+
+  - name: stg_sales_database__order_item
+    description: "Cleaned order line items, one row per product/seller within an order."
+    columns:
+      - name: order_item_pk
+        description: "Primary key. Built by concatenating order_id, product_id and seller_id."
+      - name: order_id
+        description: "Foreign key to stg_sales_database__order."
+      - name: product_id
+        description: "Foreign key to stg_sales_database__product."
+      - name: seller_id
+        description: "Foreign key to stg_sales_database__seller."
+
+  - name: stg_sales_database__payment
+    description: "Cleaned order payments, one row per payment sequence within an order."
+    columns:
+      - name: payment_pk
+        description: "Primary key. Built by concatenating order_id and payment_sequential."
+      - name: order_id
+        description: "Foreign key to stg_sales_database__order."
+
+  - name: stg_sales_database__product
+    description: "Cleaned product catalogue, one row per product."
+    columns:
+      - name: product_id
+        description: "Primary key. Unique identifier of the product."
+
+  - name: stg_sales_database__seller
+    description: "Cleaned sellers, one row per seller."
+    columns:
+      - name: seller_id
+        description: "Primary key. Unique identifier of the seller."
+
+  - name: stg_sales_database__user
+    description: "Cleaned users/customers, one row per user."
+    columns:
+      - name: user_name
+        description: "Primary key. Unique identifier of the user."
