@@ -1,0 +1,36 @@
+version: 2
+
+# Source definitions. The `schema:` value MUST match the real BigQuery dataset
+# name exactly (region EU). Do not rename without checking INFORMATION_SCHEMA.
+
+sources:
+  - name: events
+    description: "Raw Google Analytics 4 event export (one BigQuery table per day)."
+    schema: events
+    tables:
+      - name: events_20210131
+
+  - name: google_sheets
+    description: "Google Sheets imports synced to BigQuery (region/account-manager mapping)."
+    schema: google_sheets
+    tables:
+      - name: google_sheets
+
+  - name: sales_database
+    description: "Raw e-commerce operational database replicated by Fivetran."
+    schema: public
+    tables:
+      - name: feedback
+      - name: payment
+      - name: product
+      - name: order
+      - name: order_item
+      - name: seller
+      - name: user
+
+  - name: spotify
+    description: "Raw Spotify catalogue and listening history."
+    schema: spotify
+    tables:
+      - name: songs
+      - name: listening_data

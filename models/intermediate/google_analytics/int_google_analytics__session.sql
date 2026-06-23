@@ -1,6 +1,6 @@
--- models/intermediate/google_analytics/int_google_sheets__session.sql
+-- models/intermediate/google_analytics/int_google_analytics__session.sql
 with events as (
-    select * from {{ ref('stg_google_sheets__event') }}
+    select * from {{ ref('stg_google_analytics__event') }}
 ),
 
 sessions as (

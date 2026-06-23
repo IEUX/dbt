@@ -3,4 +3,27 @@ version: 2
 
 models:
   - name: int_sales_database__order
-    description: '{{ doc("int_sales_database__order") }}' 
+    description: '{{ doc("int_sales_database__order") }}'
+    columns:
+      - name: order_id
+        description: "Primary key. Unique identifier of the order."
+      - name: user_name
+        description: "Customer who placed the order."
+      - name: order_status
+        description: "Current status of the order."
+      - name: order_created_at
+        description: "Timestamp when the order was created."
+      - name: order_approved_at
+        description: "Timestamp when the order payment was approved."
+      - name: user_city
+        description: "City of the customer."
+      - name: user_state
+        description: "State of the customer."
+      - name: average_feedback_score
+        description: "Average feedback score across all feedback for the order."
+      - name: total_order_amount
+        description: "Sum of price * quantity over the order's line items."
+      - name: total_items
+        description: "Total number of units across the order's line items."
+      - name: total_distinct_items
+        description: "Number of distinct products in the order."

@@ -1,0 +1,19 @@
+# models/intermediate/spotify/int_spotify__song_listening.yml
+version: 2
+
+models:
+  - name: int_spotify__song_listening
+    description: '{{ doc("int_spotify__song_listening") }}'
+    columns:
+      - name: song_id
+        description: "Identifier of the listened song."
+      - name: artist
+        description: "Artist of the song (upper-cased)."
+      - name: title
+        description: "Title of the song (upper-cased)."
+      - name: genre
+        description: "Genre of the song."
+      - name: listen_date
+        description: "Date of the listening record (within the last 2 years)."
+      - name: minutes_listened
+        description: "Minutes listened for the record."

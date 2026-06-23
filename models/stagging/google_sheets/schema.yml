@@ -1,13 +1,16 @@
-# models/staging/google_analytics/schema.yml
+# models/staging/google_sheets/schema.yml
 version: 2
 
 models:
-  - name: stg_google_analytics__event
-    description: "Cleaned and flattened GA4 events, one row per event."
+  - name: stg_google_sheets__account_manager_region_mapping
+    description: "Mapping between a geographic state and its account manager, one row per state."
     columns:
-      - name: ga_session_id
-        description: "GA4 session identifier extracted from event_params."
-      - name: user_pseudo_id
-        description: "Pseudonymous user identifier."
-      - name: event_timestamp
-        description: "Event time, converted from microseconds to TIMESTAMP."
+      - name: state
+        description: "Primary key. Geographic state; each state maps to one account manager."
+        data_tests:
+          - unique
+          - not_null
+      - name: account_manager
+        description: "Account manager responsible for the state."
+        data_tests:
+          - not_null

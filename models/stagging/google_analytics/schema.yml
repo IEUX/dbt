@@ -1,0 +1,37 @@
+# models/staging/google_analytics/schema.yml
+version: 2
+
+models:
+  - name: stg_google_analytics__event
+    description: >
+      Cleaned and flattened GA4 events, one row per event. This model has no
+      single natural primary key (events are not unique on their own); rows are
+      identified in context by (user_pseudo_id, ga_session_id, event_timestamp).
+      ga_session_id, page_title and page_location are unnested from event_params.
+    columns:
+      - name: event_timestamp
+        description: "Calculated: event time converted from microseconds (TIMESTAMP_MICROS)."
+        data_tests:
+          - not_null
+      - name: event_name
+        description: "Name of the GA4 event."
+        data_tests:
+          - not_null
+      - name: event_date
+        description: "Calculated: event date parsed from the 'YYYYMMDD' string (PARSE_DATE)."
+      - name: ga_session_id
+        description: "Calculated: GA4 session id unnested from event_params."
+      - name: page_title
+        description: "Calculated: page title unnested from event_params."
+      - name: page_location
+        description: "Calculated: page URL unnested from event_params."
+      - name: user_pseudo_id
+        description: "Pseudonymous user identifier (foreign key used to build sessions)."
+      - name: browser
+        description: "Browser reported by the device."
+      - name: traffic_medium
+        description: "Acquisition medium of the traffic source."
+      - name: traffic_source
+        description: "Acquisition source of the traffic."
+      - name: traffic_campaign_name
+        description: "Acquisition campaign name."

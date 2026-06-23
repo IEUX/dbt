@@ -2,60 +2,177 @@
 version: 2
 
 models:
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__feedback
-    description: "Cleaned customer feedback, one row per feedback."
+    description: "Cleaned customer feedback (reviews), one row per feedback."
     columns:
       - name: feedback_id
-        description: "Primary key. Unique identifier of the feedback."
+        description: "Primary key. Native unique identifier of the feedback."
+        data_tests:
+          - unique
+          - not_null
       - name: order_id
         description: "Foreign key to stg_sales_database__order."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_feedback_order_id__order
+              to: ref('stg_sales_database__order')
+              field: order_id
       - name: feedback_score
-        description: "Customer satisfaction score for the order."
+        description: "Customer satisfaction score given for the order."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__order
     description: "Cleaned orders, one row per order."
     columns:
       - name: order_id
-        description: "Primary key. Unique identifier of the order."
+        description: "Primary key. Native unique identifier of the order."
+        data_tests:
+          - unique
+          - not_null
       - name: user_name
-        description: "Foreign key to stg_sales_database__user."
+        description: "Foreign key to stg_sales_database__user (the customer)."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_order_user_name__user
+              to: ref('stg_sales_database__user')
+              field: user_name
       - name: order_status
-        description: "Current status of the order."
+        description: "Current status of the order in its lifecycle."
+        data_tests:
+          # NOTE: validate the exhaustive list with `select distinct order_status`
+          # before relying on this test (values below follow the standard dataset).
+          - accepted_values:
+              name: accepted_values_order_status
+              values: ['delivered', 'shipped', 'canceled', 'unavailable', 'invoiced', 'processing', 'created', 'approved']
+      - name: order_date
+        description: "Timestamp when the order was created."
+      - name: order_approved_date
+        description: "Timestamp when the order payment was approved."
+      - name: pickup_date
+        description: "Timestamp when the order was handed to the carrier."
+      - name: delivered_date
+        description: "Timestamp when the order was delivered to the customer."
+      - name: estimated_time_delivery
+        description: "Estimated delivery date provided to the customer."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__order_item
     description: "Cleaned order line items, one row per product/seller within an order."
     columns:
       - name: order_item_pk
-        description: "Primary key. Built by concatenating order_id, product_id and seller_id."
+        description: "Primary key. Calculated by concatenating order_id, product_id and seller_id."
+        data_tests:
+          - unique
+          - not_null
       - name: order_id
         description: "Foreign key to stg_sales_database__order."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_order_item_order_id__order
+              to: ref('stg_sales_database__order')
+              field: order_id
       - name: product_id
         description: "Foreign key to stg_sales_database__product."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_order_item_product_id__product
+              to: ref('stg_sales_database__product')
+              field: product_id
       - name: seller_id
         description: "Foreign key to stg_sales_database__seller."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_order_item_seller_id__seller
+              to: ref('stg_sales_database__seller')
+              field: seller_id
+      - name: quantity
+        description: "Number of units of the product in the line."
+      - name: price
+        description: "Unit price of the product."
+      - name: shipping_cost
+        description: "Shipping cost charged for the line."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__payment
     description: "Cleaned order payments, one row per payment sequence within an order."
     columns:
       - name: payment_pk
-        description: "Primary key. Built by concatenating order_id and payment_sequential."
+        description: "Primary key. Calculated by concatenating order_id and payment_sequential."
+        data_tests:
+          - unique
+          - not_null
       - name: order_id
         description: "Foreign key to stg_sales_database__order."
+        data_tests:
+          - not_null
+          - relationships:
+              name: relationships_payment_order_id__order
+              to: ref('stg_sales_database__order')
+              field: order_id
+      - name: payment_type
+        description: "Payment method used for this payment sequence."
+        data_tests:
+          # NOTE: validate with `select distinct payment_type` before relying on it.
+          - accepted_values:
+              name: accepted_values_payment_type
+              values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'not_defined']
+      - name: payment_sequential
+        description: "Sequence number of the payment within the order."
+      - name: payment_installments
+        description: "Number of installments chosen by the customer."
+      - name: payment_value
+        description: "Amount paid in this payment sequence."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__product
     description: "Cleaned product catalogue, one row per product."
     columns:
       - name: product_id
-        description: "Primary key. Unique identifier of the product."
+        description: "Primary key. Native unique identifier of the product."
+        data_tests:
+          - unique
+          - not_null
+      - name: product_category
+        description: "Category label of the product."
+      - name: product_name_length
+        description: "Calculated: length of the product name, cast FLOAT -> INT64."
+      - name: product_description_length
+        description: "Calculated: length of the product description, cast FLOAT -> INT64."
+      - name: product_photos_qty
+        description: "Calculated: number of product photos, cast FLOAT -> INT64."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__seller
     description: "Cleaned sellers, one row per seller."
     columns:
       - name: seller_id
-        description: "Primary key. Unique identifier of the seller."
+        description: "Primary key. Native unique identifier of the seller."
+        data_tests:
+          - unique
+          - not_null
+      - name: seller_zip_code
+        description: "Calculated: seller postal code cast INTEGER -> STRING (it is an identifier, not a number)."
+      - name: seller_state
+        description: "Geographic state of the seller."
 
+  # ----------------------------------------------------------------------------
   - name: stg_sales_database__user
     description: "Cleaned users/customers, one row per user."
     columns:
       - name: user_name
-        description: "Primary key. Unique identifier of the user."
+        description: "Primary key. Native unique identifier of the user (used as FK in order)."
+        data_tests:
+          - unique
+          - not_null
+      - name: user_zip_code
+        description: "Calculated: customer_zip_code cast INTEGER -> STRING and renamed."
+      - name: user_city
+        description: "Renamed from customer_city."
+      - name: user_state
+        description: "Renamed from customer_state. Joined to the Google Sheet region mapping in the mart."

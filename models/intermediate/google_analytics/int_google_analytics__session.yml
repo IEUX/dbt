@@ -1,0 +1,25 @@
+# models/intermediate/google_analytics/int_google_analytics__session.yml
+version: 2
+
+models:
+  - name: int_google_analytics__session
+    description: '{{ doc("int_google_analytics__session") }}'
+    columns:
+      - name: unique_session_id
+        description: "Primary key. Concatenation of user_pseudo_id and ga_session_id."
+        data_tests:
+          - unique
+      - name: user_pseudo_id
+        description: "Pseudonymous user identifier."
+      - name: session_start_time
+        description: "Timestamp of the first event in the session."
+      - name: session_end_time
+        description: "Timestamp of the last event in the session."
+      - name: session_duration_seconds
+        description: "Duration of the session in seconds."
+      - name: browser_used
+        description: "Browser used during the session."
+      - name: event_count
+        description: "Total number of events in the session."
+      - name: pages_viewed
+        description: "Number of page_view events in the session."

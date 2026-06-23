@@ -1,0 +1,21 @@
+# models/mart/mrt_order_daily_report.yml
+version: 2
+
+models:
+  - name: mrt_order_daily_report
+    description: '{{ doc("mrt_order_daily_report") }}'
+    columns:
+      - name: order_date
+        description: "Day of the order (date part of order_created_at)."
+      - name: account_manager
+        description: "Account manager responsible for the customer's state."
+      - name: user_state
+        description: "Geographic state of the customer."
+      - name: nb_orders
+        description: "Number of distinct orders for the group."
+      - name: avg_items_per_order
+        description: "Average number of items per order for the group."
+      - name: avg_feedback_score
+        description: "Average feedback score for the group."
+      - name: avg_order_amount
+        description: "Average order amount for the group."

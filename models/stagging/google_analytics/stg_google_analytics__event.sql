@@ -1,4 +1,4 @@
--- stg_google_event__event.sql
+-- models/staging/google_analytics/stg_google_analytics__event.sql
 with source as (
     select * from {{ source('events', 'events_20210131') }}
 ),

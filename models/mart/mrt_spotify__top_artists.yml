@@ -1,0 +1,11 @@
+# models/mart/mrt_spotify__top_artists.yml
+version: 2
+
+models:
+  - name: mrt_spotify__top_artists
+    description: '{{ doc("mrt_spotify__top_artists") }}'
+    columns:
+      - name: artist
+        description: "Artist name (upper-cased)."
+      - name: minutes_listened
+        description: "Total minutes listened for the artist over the last 2 years."
